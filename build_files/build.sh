@@ -22,6 +22,17 @@ dnf5 install -y tmux
 dnf copr enable fyksen/wiremix
 dnf5 install -y wiremix
 
+# Fetch the latest release version
+TAG=$(curl -s https://api.github.com/repos/shazow/wifitui/releases/latest | grep "tag_name" | cut -d '"' -f4)
+OS="linux-$(uname -m)" # x86_64 or arm64
+LATEST_RELEASE="https://github.com/shazow/wifitui/releases/download/${TAG}/wifitui-${TAG:1}-${OS}"
+
+mkdir /tmp/wifitui
+cd /tmp/wifitui
+wget -q -O- "${LATEST_RELEASE}.rpm"
+dnf5 install -y wifitui-${TAG:1}-${OS}
+
+# try to
 #### Example for enabling a System Unit File
 
 systemctl enable podman.socket
